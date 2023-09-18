@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  serveo:
+    image: ghcr.io/minlaxz/docked-proxied-serveo:release
+    tty: true
+    stdin_open: true
+    ports:
+    - "8888:8888"
+    - "2222:2222"
+    expose:
+      - 8888
+    volumes:
+    - "./data/.ssh:/root/.ssh"
+    environment:
+      - "VIRTUAL_HOST=*.serveo.proxy.localhost"
+      - "VIRTUAL_PORT=8888"
+    command: >
+      serveo
+      -port=2222
+      -http_port=8888
+      -private_key_path=/root/.ssh/id_ed25519
+      -domain serveo.proxy.localhost
